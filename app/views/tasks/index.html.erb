@@ -1,0 +1,53 @@
+
+<%# <%byebug%>
+<% if user_signed_in? %> 
+ <div> Welcome <%= current_user.email %> </div> 
+  <%= button_to "Sign out", destroy_user_session_path, method: :delete %> 
+<% else %>
+  <%= button_to "Sign in", new_user_session_path %> 
+<% end %>
+<h1>Task Management APP</h1>
+
+<%= search_form_for @q, remote: true do |f| %>
+  <%= f.label :title_cont, 'Title' %>
+  <%= f.search_field :title_cont %>
+  <%= f.submit %>
+<% end %>
+
+
+
+<p id="notice"><%= notice %></p>
+
+<h1>Tasks</h1>
+
+<table>
+  <thead>
+    <tr>
+ <th><%= sort_link(@q, :title) %>
+    <th><%= sort_link(@q, :description) %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tasks.each do |task| %>
+    <tr>
+     <br>
+    <td><%= task.title %></td><br/>
+      </th>
+     <td><%= task.description %></td><br/>
+       </tr>
+      <tr>
+
+     <% if current_user&.has_attribute? :admin %>
+      <td><%= link_to 'Show', task %></td>
+        <% end %> 
+     
+      </tr>
+    <% end %>
+    <td><%= link_to 'Show', Task.find(1) %></td>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Task', new_task_path %>
